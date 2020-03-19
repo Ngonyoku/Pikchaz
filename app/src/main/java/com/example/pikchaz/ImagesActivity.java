@@ -74,7 +74,7 @@ public class ImagesActivity extends AppCompatActivity implements ImageAdapter.On
 
     @Override
     public void OnItemClick(int position) {
-        Toast.makeText(this, "Normal Click at position : " + position, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "Normal Click at position : " + position, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -99,6 +99,6 @@ public class ImagesActivity extends AppCompatActivity implements ImageAdapter.On
     @Override
     protected void onDestroy(){
         super.onDestroy();
-        mDatabaseRef.removeEventListener((ValueEventListener) mDBListener);
+//        mDatabaseRef.removeEventListener((ValueEventListener) mDBListener);
     }
 }
