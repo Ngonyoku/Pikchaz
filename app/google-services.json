@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "681216860752",
+    "firebase_url": "https://pikchaz-c1f26.firebaseio.com",
+    "project_id": "pikchaz-c1f26",
+    "storage_bucket": "pikchaz-c1f26.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:681216860752:android:fdcf62310a960a5d9fe755",
+        "android_client_info": {
+          "package_name": "com.example.pikchaz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "681216860752-9neid89uuubhu12uhnrakjg3fngrtal5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.pikchaz",
+            "certificate_hash": "a63743f0b70c572e84b37e93a03e48690f17dbcd"
+          }
+        },
+        {
+          "client_id": "681216860752-2l5le5ojenvkd2g9bptlvkkalbrfn7lc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwyhQB9RAs1_LSweWr_fF3a0n67rjbACk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "681216860752-2l5le5ojenvkd2g9bptlvkkalbrfn7lc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
