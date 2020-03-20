@@ -13,6 +13,7 @@ import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -33,9 +34,8 @@ import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 1;
-
-    private Button mButtonChooseImage, mButtonUpload;
-    private TextView mTextViewShowUploads;
+    private ImageButton mButtonUpload;
+    private ImageButton mTextViewShowUploads;
     private EditText mEditTextFileName;
     private ImageView mImageView;
     private ProgressBar mProgressbar;
@@ -50,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mButtonChooseImage = findViewById(R.id.button_choose_Image);
         mButtonUpload = findViewById(R.id.button_upload);
         mTextViewShowUploads = findViewById(R.id.text_view_show_uploads);
         mEditTextFileName = findViewById(R.id.edit_text_file_name);
@@ -60,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         mStorageRef = FirebaseStorage.getInstance().getReference("uploads");
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("uploads");
 
-        mButtonChooseImage.setOnClickListener(new View.OnClickListener() {
+        mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openFileChooser();
@@ -70,10 +69,10 @@ public class MainActivity extends AppCompatActivity {
         mButtonUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    uploadFile();
+                uploadFile();
+
             }
         });
-
         mTextViewShowUploads.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
     private void openFileChooser() {
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -108,48 +108,40 @@ public class MainActivity extends AppCompatActivity {
 
     private void uploadFile() {
         if (mImageUri != null) {
+            mProgressbar.setVisibility(View.VISIBLE);
             StorageReference fileReference = mStorageRef.child(System.currentTimeMillis() + "." + getFileExtension(mImageUri));
             mStorageTask = fileReference.putFile(mImageUri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
                         @Override
-                        public void run() {
-                            mProgressbar.setProgress(0);
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                            Toast.makeText(MainActivity.this, "Upload SuccessFull", Toast.LENGTH_LONG).show();
+                            Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
+                            while (!urlTask.isSuccessful()) ;
+                            Uri downloadUrl = urlTask.getResult();
+
+                            //Log.d(TAG, "onSuccess: firebase download url: " + downloadUrl.toString()); //use if testing...don't need this line.
+                            Upload upload = new Upload(mEditTextFileName.getText().toString().trim(), downloadUrl.toString());
+
+                            String uploadId = mDatabaseRef.push().getKey();
+                            mDatabaseRef.child(uploadId).setValue(upload);
+                            mEditTextFileName.setText(null);
+                            mProgressbar.setVisibility(View.GONE);
                         }
-                    }, 500);
-                    Toast.makeText(MainActivity.this, "Upload SuccessFull", Toast.LENGTH_LONG).show();
-                    Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
-                    while (!urlTask.isSuccessful());
-                    Uri downloadUrl = urlTask.getResult();
-
-                    //Log.d(TAG, "onSuccess: firebase download url: " + downloadUrl.toString()); //use if testing...don't need this line.
-                    Upload upload = new Upload(mEditTextFileName.getText().toString().trim(),downloadUrl.toString());
-
-                    String uploadId = mDatabaseRef.push().getKey();
-                    mDatabaseRef.child(uploadId).setValue(upload);
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                    double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                    mProgressbar.setProgress((int) progress);
-                }
-            });
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            mProgressbar.setVisibility(View.GONE);
+                            Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
         } else {
             Toast.makeText(this, "No File Has Been Selected", Toast.LENGTH_SHORT).show();
         }
     }
 
     private void openImagesActivity() {
-        Intent intent = new Intent(this,ImagesActivity.class );
+        Intent intent = new Intent(this, ImagesActivity.class);
         startActivity(intent);
     }
 }
