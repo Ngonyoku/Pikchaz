@@ -3,16 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:orientation="vertical"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:padding="4dp"
     tools:context=".MainActivity">
+
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="2dp"
         android:elevation="10sp"
-        >
+        app:cardCornerRadius="2dp">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -21,11 +22,12 @@
                 android:id="@+id/edit_text_file_name"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingLeft="15dp"
                 android:layout_toRightOf="@+id/button_choose_Image"
-                android:hint="Enter File Name" />
+                android:hint="Enter File Name"
+                android:paddingLeft="15dp" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -36,20 +38,41 @@
             android:layout_height="match_parent"
             android:layout_above="@+id/progress_bar"
             android:background="@color/colorGray"
-            tools:layout_editor_absoluteX="-29dp"
-            tools:layout_editor_absoluteY="-66dp" />
+            tools:layout_editor_absoluteX="-63dp"
+            tools:layout_editor_absoluteY="26dp" />
 
         <ProgressBar
             android:id="@+id/progress_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
             android:layout_above="@+id/button_upload"
             android:layout_alignParentLeft="true"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/image_view"
             app:layout_constraintEnd_toEndOf="@+id/image_view"
             app:layout_constraintStart_toStartOf="@+id/image_view"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/text_view_show_uploads"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignBaseline="@+id/button_upload"
+            android:layout_alignBottom="@+id/button_upload"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/rounded_button"
+            android:gravity="center"
+            android:src="@drawable/ic_show_image"
+            android:textColor="#eee"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/button_upload"
+            app:layout_constraintEnd_toEndOf="@+id/button_upload"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/button_upload"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.988" />
 
         <ImageButton
             android:id="@+id/button_upload"
@@ -61,32 +84,27 @@
             android:src="@drawable/ic_upload"
             android:textColor="#eee"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/image_view"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.953"
-            app:layout_constraintStart_toStartOf="@+id/image_view"
-            app:layout_constraintTop_toTopOf="@+id/image_view"
-            app:layout_constraintVertical_bias="0.933" />
+            app:layout_constraintBottom_toTopOf="@+id/imageSelector"
+            app:layout_constraintEnd_toEndOf="@+id/imageSelector"
+            app:layout_constraintStart_toStartOf="@+id/imageSelector" />
 
         <ImageButton
-            android:id="@+id/text_view_show_uploads"
+            android:id="@+id/imageSelector"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_alignBaseline="@+id/button_upload"
-            android:layout_alignBottom="@+id/button_upload"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="48dp"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="15dp"
             android:background="@drawable/rounded_button"
-            android:gravity="center"
-            android:src="@drawable/ic_show_image"
+            android:src="@drawable/ic_choose_photo"
             android:textColor="#eee"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toTopOf="@+id/button_upload"
-            app:layout_constraintEnd_toEndOf="@+id/button_upload"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="@+id/button_upload"
-            app:layout_constraintTop_toBottomOf="@+id/progress_bar"
+            android:textStyle="bold"
+            android:onClick="displayPopUp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.953"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

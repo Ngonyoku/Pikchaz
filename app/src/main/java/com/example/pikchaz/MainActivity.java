@@ -8,25 +8,22 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.MimeTypeMap;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.api.signin.internal.Storage;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
@@ -34,8 +31,7 @@ import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 1;
-    private ImageButton mButtonUpload;
-    private ImageButton mTextViewShowUploads;
+    private ImageButton mButtonUpload, imageSelctor, mTextViewShowUploads;
     private EditText mEditTextFileName;
     private ImageView mImageView;
     private ProgressBar mProgressbar;
@@ -52,19 +48,13 @@ public class MainActivity extends AppCompatActivity {
 
         mButtonUpload = findViewById(R.id.button_upload);
         mTextViewShowUploads = findViewById(R.id.text_view_show_uploads);
+        imageSelctor = findViewById(R.id.imageSelector);
         mEditTextFileName = findViewById(R.id.edit_text_file_name);
         mImageView = findViewById(R.id.image_view);
         mProgressbar = findViewById(R.id.progress_bar);
 
         mStorageRef = FirebaseStorage.getInstance().getReference("uploads");
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("uploads");
-
-        mImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openFileChooser();
-            }
-        });
 
         mButtonUpload.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,6 +67,27 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 openImagesActivity();
+            }
+        });
+    }
+
+    public void displayPopUp(View view) {
+        PopupMenu popUp = new PopupMenu(this, view);
+        popUp.inflate(R.menu.popup_menu);
+        popUp.show();
+        popUp.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.openCamera:
+                        Toast.makeText(MainActivity.this, "Opn Camera Clicked", Toast.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.localPictures:
+                        openFileChooser();
+                        return true;
+                    default:
+                        return false;
+                }
             }
         });
     }
