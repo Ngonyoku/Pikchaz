@@ -2,6 +2,7 @@ package com.example.pikchaz;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -40,7 +41,7 @@ public class ImagesActivity extends AppCompatActivity implements ImageAdapter.On
         mRecyclerView = findViewById(R.id.recycler_view);
         mProgressCircle = findViewById(R.id.progress_circle);
         mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.setLayoutManager(new GridLayoutManager(this,2));
 
         mUploads = new ArrayList<>();
         mAdapter = new ImageAdapter(ImagesActivity.this,mUploads);

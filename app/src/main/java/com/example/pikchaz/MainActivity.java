@@ -94,7 +94,6 @@ public class MainActivity extends AppCompatActivity {
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             mImageUri = data.getData();
-
             Picasso.get().load(mImageUri).into(mImageView);
         }
     }
