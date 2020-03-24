@@ -37,7 +37,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/progress_bar"
-            android:background="@color/colorGray"
             tools:layout_editor_absoluteX="-63dp"
             tools:layout_editor_absoluteY="26dp" />
 

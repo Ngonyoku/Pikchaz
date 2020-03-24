@@ -3,11 +3,17 @@ package com.example.pikchaz;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.MimeTypeMap;
@@ -60,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 uploadFile();
-
             }
         });
         mTextViewShowUploads.setOnClickListener(new View.OnClickListener() {
@@ -80,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.openCamera:
-                        Toast.makeText(MainActivity.this, "Opn Camera Clicked", Toast.LENGTH_SHORT).show();
+                        openCamera();
                         return true;
                     case R.id.localPictures:
                         openFileChooser();
@@ -90,6 +95,14 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void openCamera() {
+        if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.CAMERA}, 100);
+        }
+        Intent intentObject = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intentObject, 100);
     }
 
     private void openFileChooser() {
@@ -102,10 +115,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             mImageUri = data.getData();
             Picasso.get().load(mImageUri).into(mImageView);
+        }
+        if (requestCode == 100 && resultCode != RESULT_CANCELED && data != null && data.getData() != null) {
+            mImageUri = data.getData();
+            Bitmap captureImage = (Bitmap) data.getExtras().get("data");
+            mImageView.setImageBitmap(captureImage);
         }
     }
 
