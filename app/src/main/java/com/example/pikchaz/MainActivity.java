@@ -119,6 +119,10 @@ public class MainActivity extends AppCompatActivity {
             mImageUri = data.getData();
             Picasso.get().load(mImageUri).into(mImageView);
         }
+        if(resultCode != RESULT_CANCELED){
+            Bitmap captureImage = (Bitmap)data.getExtras().get("data");
+            mImageView.setImageBitmap(captureImage);
+        }
     }
 
     //returns the extension of the File Picked
