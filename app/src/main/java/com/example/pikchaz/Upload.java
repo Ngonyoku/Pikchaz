@@ -35,7 +35,7 @@ public class Upload {
         mImageUrl = imageUrl;
     }
 
-    @Exclude//Excludes From Dtabase
+    @Exclude//Excludes From Database
     public String getKey(){
         return mKey;
     }

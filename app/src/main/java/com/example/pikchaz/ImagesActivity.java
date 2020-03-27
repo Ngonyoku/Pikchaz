@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -33,6 +34,7 @@ public class ImagesActivity extends AppCompatActivity implements ImageAdapter.On
     private DatabaseReference mDatabaseRef;
     private EventListener mDBListener;
     private List<Upload> mUploads;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,10 +43,10 @@ public class ImagesActivity extends AppCompatActivity implements ImageAdapter.On
         mRecyclerView = findViewById(R.id.recycler_view);
         mProgressCircle = findViewById(R.id.progress_circle);
         mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(this,2));
+        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
         mUploads = new ArrayList<>();
-        mAdapter = new ImageAdapter(ImagesActivity.this,mUploads);
+        mAdapter = new ImageAdapter(ImagesActivity.this, mUploads);
         mRecyclerView.setAdapter(mAdapter);
         mStorage = FirebaseStorage.getInstance();
         mAdapter.setOnItemClickListener(ImagesActivity.this);
@@ -54,7 +56,7 @@ public class ImagesActivity extends AppCompatActivity implements ImageAdapter.On
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mUploads.clear();
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()){
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     Upload upload = postSnapshot.getValue(Upload.class);
                     upload.setKey(postSnapshot.getKey());
                     mUploads.add(upload);
@@ -95,10 +97,16 @@ public class ImagesActivity extends AppCompatActivity implements ImageAdapter.On
                 mDatabaseRef.child(selectedKey).removeValue();
                 Toast.makeText(ImagesActivity.this, "Item Deleted Successfully", Toast.LENGTH_SHORT).show();
             }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(ImagesActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+            }
         });
     }
+
     @Override
-    protected void onDestroy(){
+    protected void onDestroy() {
         super.onDestroy();
 //        mDatabaseRef.removeEventListener((ValueEventListener) mDBListener);
     }
