@@ -51,9 +51,7 @@ public class ImagesActivity extends AppCompatActivity implements ImageAdapter.On
         setSupportActionBar(toolbar);
 
         mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(
-                2,
-                StaggeredGridLayoutManager.VERTICAL));
+        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
         mUploads = new ArrayList<>();
         mAdapter = new ImageAdapter(ImagesActivity.this, mUploads);

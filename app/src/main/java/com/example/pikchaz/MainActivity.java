@@ -55,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
         mButtonUpload = findViewById(R.id.button_upload);
         mTextViewShowUploads = findViewById(R.id.text_view_show_uploads);
         imageSelctor = findViewById(R.id.imageSelector);
-        mEditTextFileName = findViewById(R.id.edit_text_file_name);
         mImageView = findViewById(R.id.image_view);
         mProgressbar = findViewById(R.id.progress_bar);
 
@@ -147,11 +146,12 @@ public class MainActivity extends AppCompatActivity {
                             Uri downloadUrl = urlTask.getResult();
 
                             //Log.d(TAG, "onSuccess: firebase download url: " + downloadUrl.toString()); //use if testing...don't need this line.
-                            Upload upload = new Upload(mEditTextFileName.getText().toString().trim(), downloadUrl.toString());
+                            String imageName = Long.toString(System.currentTimeMillis());
+                            Upload upload = new Upload(imageName, downloadUrl.toString());
 
                             String uploadId = mDatabaseRef.push().getKey();
                             mDatabaseRef.child(uploadId).setValue(upload);
-                            mEditTextFileName.setText(null);
+//                            mEditTextFileName.setText(null);
                             mProgressbar.setVisibility(View.GONE);
                         }
                     }).addOnFailureListener(new OnFailureListener() {

@@ -5,42 +5,51 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="4dp"
     tools:context=".MainActivity">
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="10sp"
-        app:cardCornerRadius="2dp">
 
-        <LinearLayout
+        app:liftOnScroll="true">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/app_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <EditText
-                android:id="@+id/edit_text_file_name"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_toRightOf="@+id/button_choose_Image"
-                android:hint="Enter File Name"
-                android:paddingLeft="15dp" />
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
+            android:layout_height="?attr/actionBarSize"
+            android:elevation="10dp"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:menu="@menu/app_bar_layout_main"
+            app:navigationIcon="@drawable/ic_menu_"
+            app:title="@string/home_app_bar_title" />
+    </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/noImageSelected_txt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="NO IMAGE SELECTED YET!"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold|italic|normal"
+            app:layout_constraintBottom_toBottomOf="@+id/image_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/image_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/progress_bar"
-            tools:layout_editor_absoluteX="-63dp"
-            tools:layout_editor_absoluteY="26dp"
             android:scaleType="centerCrop"
-            />
+            tools:layout_editor_absoluteX="-63dp"
+            tools:layout_editor_absoluteY="26dp" />
 
         <ProgressBar
             android:id="@+id/progress_bar"
@@ -96,10 +105,10 @@
             android:layout_alignParentBottom="true"
             android:layout_margin="15dp"
             android:background="@drawable/rounded_button"
+            android:onClick="displayPopUp"
             android:src="@drawable/ic_choose_photo"
             android:textColor="#eee"
             android:textStyle="bold"
-            android:onClick="displayPopUp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.953"
