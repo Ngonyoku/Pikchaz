@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Pikchaz</string>
+    <string name="home_app_bar_title">Uploads</string>
+    <string name="close_app_text">Close Pikchaz</string>
 </resources>

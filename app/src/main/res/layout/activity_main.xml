@@ -38,7 +38,9 @@
             android:layout_height="match_parent"
             android:layout_above="@+id/progress_bar"
             tools:layout_editor_absoluteX="-63dp"
-            tools:layout_editor_absoluteY="26dp" />
+            tools:layout_editor_absoluteY="26dp"
+            android:scaleType="centerCrop"
+            />
 
         <ProgressBar
             android:id="@+id/progress_bar"

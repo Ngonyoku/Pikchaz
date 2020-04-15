@@ -2,11 +2,14 @@ package com.example.pikchaz;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -28,6 +31,7 @@ import java.util.List;
 
 public class ImagesActivity extends AppCompatActivity implements ImageAdapter.OnItemClickListener {
     private RecyclerView mRecyclerView;
+    private Toolbar toolbar;
     private ImageAdapter mAdapter;
     private ProgressBar mProgressCircle;
     private FirebaseStorage mStorage;
@@ -42,8 +46,14 @@ public class ImagesActivity extends AppCompatActivity implements ImageAdapter.On
 
         mRecyclerView = findViewById(R.id.recycler_view);
         mProgressCircle = findViewById(R.id.progress_circle);
+        toolbar = findViewById(R.id.app_toolbar);
+
+        setSupportActionBar(toolbar);
+
         mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(
+                2,
+                StaggeredGridLayoutManager.VERTICAL));
 
         mUploads = new ArrayList<>();
         mAdapter = new ImageAdapter(ImagesActivity.this, mUploads);
@@ -51,6 +61,7 @@ public class ImagesActivity extends AppCompatActivity implements ImageAdapter.On
         mStorage = FirebaseStorage.getInstance();
         mAdapter.setOnItemClickListener(ImagesActivity.this);
         mDatabaseRef = mDatabaseRef = FirebaseDatabase.getInstance().getReference("uploads");
+
         //To get data out of mUploads
         mDatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -73,6 +84,13 @@ public class ImagesActivity extends AppCompatActivity implements ImageAdapter.On
 
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.menu_app_bar, menu);
+        return true;
     }
 
     @Override
